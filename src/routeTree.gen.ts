@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EntradasRouteImport } from './routes/entradas'
+import { Route as EvolucaoRouteImport } from './routes/evolucao'
 import { Route as SaidasRouteImport } from './routes/saidas'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const EntradasRoute = EntradasRouteImport.update({
   path: '/entradas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvolucaoRoute = EvolucaoRouteImport.update({
+  id: '/evolucao',
+  path: '/evolucao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SaidasRoute = SaidasRouteImport.update({
   id: '/saidas',
   path: '/saidas',
@@ -32,30 +38,34 @@ const SaidasRoute = SaidasRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/entradas': typeof EntradasRoute
+  '/evolucao': typeof EvolucaoRoute
   '/saidas': typeof SaidasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/entradas': typeof EntradasRoute
+  '/evolucao': typeof EvolucaoRoute
   '/saidas': typeof SaidasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/entradas': typeof EntradasRoute
+  '/evolucao': typeof EvolucaoRoute
   '/saidas': typeof SaidasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/entradas' | '/saidas'
+  fullPaths: '/' | '/entradas' | '/evolucao' | '/saidas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/entradas' | '/saidas'
-  id: '__root__' | '/' | '/entradas' | '/saidas'
+  to: '/' | '/entradas' | '/evolucao' | '/saidas'
+  id: '__root__' | '/' | '/entradas' | '/evolucao' | '/saidas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EntradasRoute: typeof EntradasRoute
+  EvolucaoRoute: typeof EvolucaoRoute
   SaidasRoute: typeof SaidasRoute
 }
 
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EntradasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evolucao': {
+      id: '/evolucao'
+      path: '/evolucao'
+      fullPath: '/evolucao'
+      preLoaderRoute: typeof EvolucaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/saidas': {
       id: '/saidas'
       path: '/saidas'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EntradasRoute: EntradasRoute,
+  EvolucaoRoute: EvolucaoRoute,
   SaidasRoute: SaidasRoute,
 }
 export const routeTree = rootRouteImport
