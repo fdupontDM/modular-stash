@@ -14,10 +14,150 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      entradas: {
+        Row: {
+          created_at: string
+          custo_unitario: number
+          data: string
+          fornecedor: string | null
+          id: string
+          material_id: string
+          observacao: string | null
+          quantidade: number
+        }
+        Insert: {
+          created_at?: string
+          custo_unitario: number
+          data?: string
+          fornecedor?: string | null
+          id?: string
+          material_id: string
+          observacao?: string | null
+          quantidade: number
+        }
+        Update: {
+          created_at?: string
+          custo_unitario?: number
+          data?: string
+          fornecedor?: string | null
+          id?: string
+          material_id?: string
+          observacao?: string | null
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entradas_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materiais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entradas_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "vw_estoque"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      materiais: {
+        Row: {
+          codigo: string
+          created_at: string
+          descricao: string
+          estoque_minimo: number
+          id: string
+          unidade: string
+        }
+        Insert: {
+          codigo: string
+          created_at?: string
+          descricao: string
+          estoque_minimo?: number
+          id?: string
+          unidade?: string
+        }
+        Update: {
+          codigo?: string
+          created_at?: string
+          descricao?: string
+          estoque_minimo?: number
+          id?: string
+          unidade?: string
+        }
+        Relationships: []
+      }
+      saidas: {
+        Row: {
+          created_at: string
+          data: string
+          destino_nome: string
+          destino_tipo: string
+          id: string
+          material_id: string
+          observacao: string | null
+          quantidade: number
+        }
+        Insert: {
+          created_at?: string
+          data?: string
+          destino_nome: string
+          destino_tipo?: string
+          id?: string
+          material_id: string
+          observacao?: string | null
+          quantidade: number
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          destino_nome?: string
+          destino_tipo?: string
+          id?: string
+          material_id?: string
+          observacao?: string | null
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saidas_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materiais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "saidas_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "vw_estoque"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      vw_estoque: {
+        Row: {
+          codigo: string | null
+          custo_medio: number | null
+          custo_ultima_entrada: number | null
+          descricao: string | null
+          estoque_minimo: number | null
+          id: string | null
+          saldo_restante: number | null
+          saldo_total: number | null
+          status: string | null
+          total_comprado: number | null
+          total_entradas: number | null
+          total_gasto: number | null
+          total_saidas: number | null
+          unidade: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
