@@ -71,9 +71,18 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 1rem;
+  --font-display-family: "Space Grotesk", sans-serif;
+  --font-body-family: "Inter", sans-serif;
+  --brand: oklch(0.68 0.19 33);
+  --brand-foreground: oklch(1 0 0);
+  --accent-warm: oklch(0.85 0.15 84);
+  --ink: oklch(0.19 0.025 300);
+  --paper: oklch(0.98 0.009 85);
+  --mint: oklch(0.72 0.19 149);
+  --sky: oklch(0.62 0.19 259);
+  --background: oklch(0.98 0.009 85);
+  --foreground: oklch(0.19 0.025 300);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
