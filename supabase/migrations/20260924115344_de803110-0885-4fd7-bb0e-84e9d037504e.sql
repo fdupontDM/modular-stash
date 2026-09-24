@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.handle_new_user(), public.aplicar_convite(), public.remover_convite(), public.registrar_historico() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.has_role(uuid, public.app_role), public.is_membro(uuid), public.is_gestor(uuid) FROM PUBLIC, anon;
