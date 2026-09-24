@@ -108,7 +108,10 @@ function Entradas() {
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              if (!materialId) return toast.error("Escolha um material.");
+              if (!materialId) {
+                toast.error("Escolha um material.");
+                return;
+              }
               criarEntrada.mutate();
             }}
           >
