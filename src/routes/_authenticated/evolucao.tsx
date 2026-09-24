@@ -13,7 +13,7 @@ import {
 import { AppLayout, PageTitle } from "@/components/AppLayout";
 import { entradasQuery, materiaisQuery, moeda, dataBR } from "@/lib/estoque";
 
-export const Route = createFileRoute("/evolucao")({
+export const Route = createFileRoute("/_authenticated/evolucao")({
   head: () => ({
     meta: [
       { title: "Evolução de valor — Estoque de Marketing Modular" },
