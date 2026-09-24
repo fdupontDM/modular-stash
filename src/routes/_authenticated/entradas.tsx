@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppLayout, PageTitle } from "@/components/AppLayout";
 import { entradasQuery, materiaisQuery, moeda, numero, dataBR } from "@/lib/estoque";
 
-export const Route = createFileRoute("/entradas")({
+export const Route = createFileRoute("/_authenticated/entradas")({
   head: () => ({
     meta: [
       { title: "Entradas de materiais — Estoque de Marketing Modular" },

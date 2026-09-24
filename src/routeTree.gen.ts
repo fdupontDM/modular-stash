@@ -9,104 +9,153 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as EntradasRouteImport } from './routes/entradas'
-import { Route as EvolucaoRouteImport } from './routes/evolucao'
-import { Route as SaidasRouteImport } from './routes/saidas'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedEntradasRouteImport } from './routes/_authenticated/entradas'
+import { Route as AuthenticatedEvolucaoRouteImport } from './routes/_authenticated/evolucao'
+import { Route as AuthenticatedSaidasRouteImport } from './routes/_authenticated/saidas'
 
-const IndexRoute = IndexRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const EntradasRoute = EntradasRouteImport.update({
+const AuthenticatedEntradasRoute = AuthenticatedEntradasRouteImport.update({
   id: '/entradas',
   path: '/entradas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const EvolucaoRoute = EvolucaoRouteImport.update({
+const AuthenticatedEvolucaoRoute = AuthenticatedEvolucaoRouteImport.update({
   id: '/evolucao',
   path: '/evolucao',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const SaidasRoute = SaidasRouteImport.update({
+const AuthenticatedSaidasRoute = AuthenticatedSaidasRouteImport.update({
   id: '/saidas',
   path: '/saidas',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/entradas': typeof EntradasRoute
-  '/evolucao': typeof EvolucaoRoute
-  '/saidas': typeof SaidasRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
+  '/entradas': typeof AuthenticatedEntradasRoute
+  '/evolucao': typeof AuthenticatedEvolucaoRoute
+  '/saidas': typeof AuthenticatedSaidasRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/entradas': typeof EntradasRoute
-  '/evolucao': typeof EvolucaoRoute
-  '/saidas': typeof SaidasRoute
+  '/auth': typeof AuthRoute
+  '/entradas': typeof AuthenticatedEntradasRoute
+  '/evolucao': typeof AuthenticatedEvolucaoRoute
+  '/saidas': typeof AuthenticatedSaidasRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/entradas': typeof EntradasRoute
-  '/evolucao': typeof EvolucaoRoute
-  '/saidas': typeof SaidasRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/entradas': typeof AuthenticatedEntradasRoute
+  '/_authenticated/evolucao': typeof AuthenticatedEvolucaoRoute
+  '/_authenticated/saidas': typeof AuthenticatedSaidasRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/entradas' | '/evolucao' | '/saidas'
+  fullPaths: '/' | '/auth' | '/entradas' | '/evolucao' | '/saidas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/entradas' | '/evolucao' | '/saidas'
-  id: '__root__' | '/' | '/entradas' | '/evolucao' | '/saidas'
+  to: '/auth' | '/entradas' | '/evolucao' | '/saidas' | '/'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/entradas'
+    | '/_authenticated/evolucao'
+    | '/_authenticated/saidas'
+    | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  EntradasRoute: typeof EntradasRoute
-  EvolucaoRoute: typeof EvolucaoRoute
-  SaidasRoute: typeof SaidasRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/entradas': {
-      id: '/entradas'
+    '/_authenticated/entradas': {
+      id: '/_authenticated/entradas'
       path: '/entradas'
       fullPath: '/entradas'
-      preLoaderRoute: typeof EntradasRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEntradasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/evolucao': {
-      id: '/evolucao'
+    '/_authenticated/evolucao': {
+      id: '/_authenticated/evolucao'
       path: '/evolucao'
       fullPath: '/evolucao'
-      preLoaderRoute: typeof EvolucaoRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEvolucaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/saidas': {
-      id: '/saidas'
+    '/_authenticated/saidas': {
+      id: '/_authenticated/saidas'
       path: '/saidas'
       fullPath: '/saidas'
-      preLoaderRoute: typeof SaidasRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedSaidasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedEntradasRoute: typeof AuthenticatedEntradasRoute
+  AuthenticatedEvolucaoRoute: typeof AuthenticatedEvolucaoRoute
+  AuthenticatedSaidasRoute: typeof AuthenticatedSaidasRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedEntradasRoute: AuthenticatedEntradasRoute,
+  AuthenticatedEvolucaoRoute: AuthenticatedEvolucaoRoute,
+  AuthenticatedSaidasRoute: AuthenticatedSaidasRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  EntradasRoute: EntradasRoute,
-  EvolucaoRoute: EvolucaoRoute,
-  SaidasRoute: SaidasRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

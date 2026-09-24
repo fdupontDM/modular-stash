@@ -11,7 +11,7 @@ import {
   type EstoqueRow,
 } from "@/lib/estoque";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "Painel de estoque — Estoque de Marketing Modular" },
