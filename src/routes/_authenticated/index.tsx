@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { AppLayout, PageTitle } from "@/components/AppLayout";
+import { useAcesso } from "@/lib/usuarios";
 import {
   estoqueQuery,
   saidasQuery,
@@ -40,6 +43,58 @@ function Painel() {
   const [busca, setBusca] = useState("");
   const estoque = useQuery(estoqueQuery);
   const saidas = useQuery(saidasQuery);
+  const acesso = useAcesso();
+  const gestor = !!acesso.data?.gestor;
+  const qc = useQueryClient();
+  const [edit, setEdit] = useState<EstoqueRow | null>(null);
+  const [form, setForm] = useState({ codigo: "", descricao: "", unidade: "", estoque_minimo: "" });
+
+  const invalidar = () => {
+    ["estoque", "materiais", "entradas", "saidas", "historico"].forEach((k) =>
+      qc.invalidateQueries({ queryKey: [k] }),
+    );
+  };
+  const salvar = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from("materiais")
+        .update({
+          codigo: form.codigo.trim(),
+          descricao: form.descricao.trim(),
+          unidade: form.unidade.trim() || "un",
+          estoque_minimo: Number(form.estoque_minimo) || 0,
+        })
+        .eq("id", edit!.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Produto atualizado.");
+      setEdit(null);
+      invalidar();
+    },
+    onError: () => toast.error("Não foi possível salvar (código repetido ou sem permissão)."),
+  });
+  const excluir = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("materiais").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Produto excluído.");
+      setEdit(null);
+      invalidar();
+    },
+    onError: () => toast.error("Não foi possível excluir."),
+  });
+  const abrir = (r: EstoqueRow) => {
+    setEdit(r);
+    setForm({
+      codigo: r.codigo,
+      descricao: r.descricao,
+      unidade: r.unidade,
+      estoque_minimo: String(r.estoque_minimo),
+    });
+  };
 
   const rows = (estoque.data ?? []).filter(
     (r) =>
@@ -104,6 +159,7 @@ function Painel() {
                 <th className="px-4 py-3 text-right font-semibold">Total gasto</th>
                 <th className="px-4 py-3 text-right font-semibold">Saldo restante</th>
                 <th className="px-6 py-3 font-semibold">Status</th>
+                {gestor && <th className="px-4 py-3" />}
               </tr>
             </thead>
             <tbody>
@@ -141,6 +197,16 @@ function Painel() {
                       {statusLabel[r.status]}
                     </span>
                   </td>
+                  {gestor && (
+                    <td className="px-4 py-4">
+                      <button
+                        onClick={() => abrir(r)}
+                        className="rounded-full border-2 border-ink px-3 py-1 text-xs font-semibold"
+                      >
+                        Editar
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -168,6 +234,67 @@ function Painel() {
           )}
         </div>
       </section>
+      {edit && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-ink/40 p-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!form.codigo.trim() || !form.descricao.trim()) {
+                toast.error("Código e descrição são obrigatórios.");
+                return;
+              }
+              salvar.mutate();
+            }}
+            className="w-full max-w-md space-y-4 rounded-3xl border-2 border-ink bg-white p-6"
+          >
+            <h2 className="font-display text-2xl font-bold">Editar produto</h2>
+            {(
+              [
+                ["codigo", "Código"],
+                ["descricao", "Descrição"],
+                ["unidade", "Unidade"],
+                ["estoque_minimo", "Estoque mínimo"],
+              ] as const
+            ).map(([k, l]) => (
+              <label key={k} className="block">
+                <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/50">
+                  {l}
+                </span>
+                <input
+                  type={k === "estoque_minimo" ? "number" : "text"}
+                  value={form[k]}
+                  onChange={(e) => setForm({ ...form, [k]: e.target.value })}
+                  className="w-full rounded-2xl border-2 border-ink/15 px-4 py-2.5 text-sm outline-none focus:border-ink"
+                />
+              </label>
+            ))}
+            <div className="flex items-center justify-between gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() =>
+                  confirm(`Excluir ${edit.codigo}? Todas as entradas e saídas dele também serão apagadas.`) &&
+                  excluir.mutate(edit.id)
+                }
+                className="text-sm font-semibold text-brand"
+              >
+                Excluir produto
+              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEdit(null)}
+                  className="rounded-full border-2 border-ink px-4 py-2 text-sm font-semibold"
+                >
+                  Cancelar
+                </button>
+                <button className="rounded-full border-2 border-ink bg-brand px-5 py-2 text-sm font-bold text-brand-foreground">
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
     </AppLayout>
   );
 }
