@@ -26,7 +26,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   };
 
   const nome =
-    (acesso.data?.user.user_metadata?.full_name as string | undefined) ??
+    (acesso.data?.user.user_metadata?.["full_name"] as string | undefined) ??
     acesso.data?.user.email ??
     "";
   const iniciais = nome

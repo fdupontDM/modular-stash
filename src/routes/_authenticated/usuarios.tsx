@@ -106,7 +106,7 @@ function Usuarios() {
           className="flex flex-wrap gap-3"
           onSubmit={(e) => {
             e.preventDefault();
-            if (!email.includes("@")) return toast.error("Informe um e-mail válido.");
+            if (!email.includes("@")) { toast.error("Informe um e-mail válido."); return; }
             salvar.mutate({ email, role: papel });
           }}
         >

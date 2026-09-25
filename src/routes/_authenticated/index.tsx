@@ -239,8 +239,10 @@ function Painel() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (!form.codigo.trim() || !form.descricao.trim())
-                return toast.error("Código e descrição são obrigatórios.");
+              if (!form.codigo.trim() || !form.descricao.trim()) {
+                toast.error("Código e descrição são obrigatórios.");
+                return;
+              }
               salvar.mutate();
             }}
             className="w-full max-w-md space-y-4 rounded-3xl border-2 border-ink bg-white p-6"

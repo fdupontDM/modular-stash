@@ -19,13 +19,15 @@ export const Route = createFileRoute("/_authenticated/historico")({
   component: Historico,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Rec = { [k: string]: any } & { codigo?: any; descricao?: any; quantidade?: any; custo_unitario?: any; fornecedor?: any; destino_nome?: any; material_id?: any };
 type Linha = {
   id: string;
   user_id: string | null;
   tabela: string;
   acao: string;
-  antes: Record<string, unknown> | null;
-  depois: Record<string, unknown> | null;
+  antes: Rec | null;
+  depois: Rec | null;
   created_at: string;
 };
 
