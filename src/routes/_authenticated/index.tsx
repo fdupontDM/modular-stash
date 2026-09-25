@@ -159,6 +159,7 @@ function Painel() {
                 <th className="px-4 py-3 text-right font-semibold">Total gasto</th>
                 <th className="px-4 py-3 text-right font-semibold">Saldo restante</th>
                 <th className="px-6 py-3 font-semibold">Status</th>
+                {gestor && <th className="px-4 py-3" />}
               </tr>
             </thead>
             <tbody>
@@ -196,6 +197,16 @@ function Painel() {
                       {statusLabel[r.status]}
                     </span>
                   </td>
+                  {gestor && (
+                    <td className="px-4 py-4">
+                      <button
+                        onClick={() => abrir(r)}
+                        className="rounded-full border-2 border-ink px-3 py-1 text-xs font-semibold"
+                      >
+                        Editar
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
