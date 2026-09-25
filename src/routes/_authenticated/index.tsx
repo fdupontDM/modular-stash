@@ -234,6 +234,65 @@ function Painel() {
           )}
         </div>
       </section>
+      {edit && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-ink/40 p-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!form.codigo.trim() || !form.descricao.trim())
+                return toast.error("Código e descrição são obrigatórios.");
+              salvar.mutate();
+            }}
+            className="w-full max-w-md space-y-4 rounded-3xl border-2 border-ink bg-white p-6"
+          >
+            <h2 className="font-display text-2xl font-bold">Editar produto</h2>
+            {(
+              [
+                ["codigo", "Código"],
+                ["descricao", "Descrição"],
+                ["unidade", "Unidade"],
+                ["estoque_minimo", "Estoque mínimo"],
+              ] as const
+            ).map(([k, l]) => (
+              <label key={k} className="block">
+                <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/50">
+                  {l}
+                </span>
+                <input
+                  type={k === "estoque_minimo" ? "number" : "text"}
+                  value={form[k]}
+                  onChange={(e) => setForm({ ...form, [k]: e.target.value })}
+                  className="w-full rounded-2xl border-2 border-ink/15 px-4 py-2.5 text-sm outline-none focus:border-ink"
+                />
+              </label>
+            ))}
+            <div className="flex items-center justify-between gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() =>
+                  confirm(`Excluir ${edit.codigo}? Todas as entradas e saídas dele também serão apagadas.`) &&
+                  excluir.mutate(edit.id)
+                }
+                className="text-sm font-semibold text-brand"
+              >
+                Excluir produto
+              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEdit(null)}
+                  className="rounded-full border-2 border-ink px-4 py-2 text-sm font-semibold"
+                >
+                  Cancelar
+                </button>
+                <button className="rounded-full border-2 border-ink bg-brand px-5 py-2 text-sm font-bold text-brand-foreground">
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
     </AppLayout>
   );
 }
