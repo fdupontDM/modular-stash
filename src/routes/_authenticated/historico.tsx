@@ -117,7 +117,8 @@ function Historico() {
       </div>
 
       <section className="overflow-hidden rounded-3xl border-2 border-ink bg-white">
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[640px] text-sm">
           <thead>
             <tr className="border-b-2 border-ink/10 text-left text-[11px] uppercase tracking-wider text-ink/40">
               <th className="px-6 py-3">Quando</th>
@@ -155,6 +156,7 @@ function Historico() {
             ))}
           </tbody>
         </table>
+      </div>
       </section>
     </AppLayout>
   );

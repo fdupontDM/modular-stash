@@ -120,17 +120,17 @@ function Painel() {
           }
         />
         <div className="flex flex-wrap gap-3">
-          <div className="rounded-3xl border-2 border-ink bg-white px-6 py-4">
+          <div className="rounded-3xl border-2 border-ink bg-white px-5 py-3 md:px-6 md:py-4">
             <p className="text-xs font-medium text-ink/50">Itens em estoque</p>
-            <p className="font-display text-3xl font-bold">{numero(itens)}</p>
+            <p className="font-display text-2xl font-bold md:text-3xl">{numero(itens)}</p>
           </div>
           <div className="rounded-3xl border-2 border-ink bg-accent-warm px-6 py-4">
             <p className="text-xs font-medium text-ink/60">Total gasto</p>
-            <p className="font-display text-3xl font-bold">{moeda(gasto)}</p>
+            <p className="font-display text-2xl font-bold md:text-3xl">{moeda(gasto)}</p>
           </div>
           <div className="rounded-3xl border-2 border-ink bg-brand px-6 py-4 text-brand-foreground">
             <p className="text-xs font-medium text-brand-foreground/70">Saldo restante</p>
-            <p className="font-display text-3xl font-bold">{moeda(restante)}</p>
+            <p className="font-display text-2xl font-bold md:text-3xl">{moeda(restante)}</p>
           </div>
         </div>
       </div>
