@@ -10,6 +10,7 @@ const nav = [
   { to: "/saidas", label: "Saídas & unidades", gestor: false },
   { to: "/evolucao", label: "Evolução de valor", gestor: false },
   { to: "/historico", label: "Histórico", gestor: false },
+  { to: "/relatorios", label: "Relatórios", gestor: false },
   { to: "/usuarios", label: "Usuários", gestor: true },
 ] as const;
 
