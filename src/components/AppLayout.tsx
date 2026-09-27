@@ -62,9 +62,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-paper font-body text-ink antialiased">
-      <header className="flex items-center justify-between border-b-4 border-ink px-8 py-5">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="grid size-11 place-items-center rounded-2xl bg-brand font-display text-xl font-bold text-brand-foreground">
+      <header className="flex items-center justify-between gap-3 border-b-4 border-ink px-4 py-4 md:px-8 md:py-5">
+        <Link to="/" className="flex min-w-0 items-center gap-3">
+          <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand font-display text-xl font-bold text-brand-foreground">
             M
           </div>
           <div>
@@ -73,21 +73,21 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </Link>
         <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-semibold">{nome}</p>
+          <div className="min-w-0 text-right">
+            <p className="hidden max-w-48 truncate text-sm font-semibold sm:block">{nome}</p>
             <button onClick={sair} className="text-xs font-medium text-brand">
               Sair
             </button>
           </div>
-          <div className="grid size-11 place-items-center rounded-full bg-accent-warm font-display font-bold">
+          <div className="grid size-11 shrink-0 place-items-center rounded-full bg-accent-warm font-display font-bold">
             {iniciais}
           </div>
         </div>
       </header>
 
-      <div className="flex">
-        <aside className="min-h-[calc(100vh-85px)] w-60 shrink-0 space-y-2 border-r-4 border-ink p-5">
-          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/40">
+      <div className="flex flex-col md:flex-row">
+        <aside className="flex gap-2 overflow-x-auto border-b-4 border-ink p-3 md:min-h-[calc(100vh-85px)] md:w-60 md:shrink-0 md:flex-col md:space-y-0 md:border-b-0 md:border-r-4 md:p-5">
+          <p className="mb-2 hidden px-3 text-[11px] md:block font-semibold uppercase tracking-[0.2em] text-ink/40">
             Menu
           </p>
           {nav
@@ -97,10 +97,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                className="flex items-center gap-3 rounded-2xl border-2 border-ink/10 bg-white px-4 py-3 font-medium text-ink"
+                className="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-2xl border-2 border-ink/10 bg-white px-4 py-2.5 md:py-3 font-medium text-ink"
                 activeProps={{
                   className:
-                    "flex items-center gap-3 rounded-2xl bg-brand px-4 py-3 font-display font-semibold text-brand-foreground border-2 border-ink",
+                    "flex shrink-0 items-center gap-3 whitespace-nowrap rounded-2xl bg-brand px-4 py-2.5 md:py-3 font-display font-semibold text-brand-foreground border-2 border-ink",
                 }}
               >
                 {item.label}
@@ -108,7 +108,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             ))}
         </aside>
 
-        <main className="flex-1 space-y-8 p-8">{children}</main>
+        <main className="min-w-0 flex-1 space-y-6 p-4 md:space-y-8 md:p-8">{children}</main>
       </div>
     </div>
   );
@@ -118,7 +118,7 @@ export function PageTitle({ kicker, title }: { kicker: string; title: ReactNode 
   return (
     <div>
       <p className="text-sm font-semibold uppercase tracking-[0.15em] text-brand">{kicker}</p>
-      <h1 className="mt-1 font-display text-5xl font-bold leading-[0.95]">{title}</h1>
+      <h1 className="mt-1 font-display text-3xl md:text-5xl font-bold leading-[0.95]">{title}</h1>
     </div>
   );
 }
