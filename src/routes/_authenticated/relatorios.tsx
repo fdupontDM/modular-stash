@@ -67,7 +67,7 @@ async function carregar(ids: Op[]): Promise<Secao[]> {
     } else {
       const [{ data, error }, perfis] = await Promise.all([
         supabase.from("historico").select("*").order("created_at", { ascending: false }).limit(2000),
-        supabase.from("perfis").select("id, nome, email"),
+        supabase.from("profiles").select("id, nome, email"),
       ]);
       if (error) throw error;
       const acao: Record<string, string> = { INSERT: "Criou", UPDATE: "Editou", DELETE: "Excluiu" };
@@ -140,7 +140,7 @@ function Relatorios() {
   const toggle = (id: Op) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
 
   const gerar = async (tipo: "xlsx" | "pdf") => {
-    if (!sel.length) return toast.error("Selecione ao menos uma parte do relatório.");
+    if (!sel.length) { toast.error("Selecione ao menos uma parte do relatório."); return; }
     setOcupado(true);
     try {
       const secoes = await carregar(opcoes.map((o) => o.id).filter((id) => sel.includes(id)));
